@@ -1,0 +1,33 @@
+.lab1-template {
+    position: relative;
+}
+
+.lab1-template__counter {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.lab1-template__button {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.lab1-template__form {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    margin-top: 40px;
+}
+
+.lab1-template__input {
+    margin-bottom: 10px;
+}
+
+.lab1-template__buttons {
+    display: flex;
+    justify-content: space-between;
+}

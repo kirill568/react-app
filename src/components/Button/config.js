@@ -1,0 +1,5 @@
+export const BUTTON_COLOR_BLUE = "blue"
+export const BUTTON_COLOR_GREEN = "green"
+export const BUTTON_COLOR_ORANGE = "orange"
+export const BUTTON_COLOR_RED = "red"
+export const BUTTON_COLOR_GREY = "grey"

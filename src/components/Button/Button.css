@@ -1,0 +1,39 @@
+.b-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    margin: 0;
+    color: white;
+}
+
+.b-button:disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+
+.b-button__color-blue {
+    background-color: #1976D2;
+}
+
+.b-button__color-green {
+    background-color: #43A047;
+}
+
+.b-button__color-orange {
+    background-color: #FB8C00;
+}
+
+.b-button__color-red {
+    background-color: #E53935;
+}
+
+.b-button__color-grey {
+    background-color: #757575;
+}
