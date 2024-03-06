@@ -6,10 +6,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const Footer = () => {
     return (
-        <BottomNavigation
-            showLabels
-            sx={{position: 'fixed', bottom: 0, left: 0, width: 1.0}}
-        >
+        <BottomNavigation showLabels>
             <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
             <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
             <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />

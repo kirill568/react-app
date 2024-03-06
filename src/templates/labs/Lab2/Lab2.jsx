@@ -4,7 +4,7 @@ import { BUTTON_COLOR_ORANGE, BUTTON_COLOR_GREEN } from "../../../components/But
 
 const Lab2 = () => {
     return (
-            <div class="lab2-template">
+            <div className="lab2-template">
                 <Button
                     label="Button 1"
                     onClick={() => console.log("On click")}

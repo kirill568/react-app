@@ -1,0 +1,11 @@
+.lab4-template .b-button {
+    margin-right: 10px;
+}
+
+.lab4-template__theme-light {
+    background-color: #DCEDC8;
+}
+
+.lab4-template__theme-dark {
+    background-color: #455A64;
+}

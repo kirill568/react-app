@@ -4,6 +4,7 @@ import App from './App.jsx'
 import ErrorPage from './templates/ErrorPage.jsx'
 import Lab1 from './templates/labs/Lab1'
 import Lab2 from './templates/labs/Lab2'
+import Lab4 from './templates/labs/Lab4'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "lab/2",
         element: <Lab2 />,
+      },
+      {
+        path: "lab/4",
+        element: <Lab4 />,
       },
     ],
   },
