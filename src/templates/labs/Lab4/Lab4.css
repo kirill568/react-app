@@ -9,3 +9,11 @@
 .lab4-template__theme-dark {
     background-color: #455A64;
 }
+
+.lab4-template__clicker-wrapper {
+    margin-top: 10px;
+}
+
+.lab4-template__clicker-wrapper span {
+    margin-right: 5px;
+}
