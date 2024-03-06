@@ -14,6 +14,6 @@
     margin-top: 10px;
 }
 
-.lab4-template__clicker-wrapper span {
-    margin-right: 5px;
+.lab4-template__clicker-wrapper .b-button {
+    margin-left: 5px;
 }

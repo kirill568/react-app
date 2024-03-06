@@ -5,6 +5,8 @@ import ErrorPage from './templates/ErrorPage.jsx'
 import Lab1 from './templates/labs/Lab1'
 import Lab2 from './templates/labs/Lab2'
 import Lab4 from './templates/labs/Lab4'
+import store from './store.js'
+import { Provider } from 'react-redux'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -35,6 +37,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 )
