@@ -14,13 +14,13 @@ const Lab5 = () => {
       localStorage.setItem("password", values.password)
     }
     setSubmitting(false)
-  })
+  }, [])
 
-  const handleReset = useCallback((values, { resetForm }) => {
+  const handleReset = useCallback((values) => {
     values.login = ""
     values.password = ""
     values.isRememberMe = false
-  })
+  }, [])
 
   return (
     <Formik
