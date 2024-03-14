@@ -9,12 +9,13 @@ import Grid from '@mui/material/Grid';
 import { Outlet } from "react-router-dom";
 import { Box } from '@mui/material'
 import ThemeContext from './contexts/ThemeContext'
-import { THEME_LIGHT, THEME_DARK } from './contexts/ThemeContext'
+import { THEME_LIGHT } from './contexts/ThemeContext'
 
 const menuItems = [
   {id: 1, text: "Lab1", path: "lab/1"},
   {id: 2, text: "Lab2", path: "lab/2"},
-  {id: 4, text: "Lab4", path: "lab/4"}
+  {id: 4, text: "Lab4", path: "lab/4"},
+  {id: 5, text: "Lab5", path: "lab/5"}
 ]
 
 function App() {
