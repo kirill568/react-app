@@ -6,6 +6,7 @@ import Lab1 from './templates/labs/Lab1'
 import Lab2 from './templates/labs/Lab2'
 import Lab4 from './templates/labs/Lab4'
 import Lab5 from './templates/labs/Lab5'
+import Lab6 from './templates/labs/Lab6'
 import store from './store.js'
 import { Provider } from 'react-redux'
 import {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "lab/5",
         element: <Lab5 />,
+      },
+      {
+        path: "lab/6",
+        element: <Lab6 />,
       },
     ],
   },

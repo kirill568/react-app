@@ -13,6 +13,7 @@ const Lab4 = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log("Use effect")
     setCount(0)
     dispatch(setValue(0))
   }, [theme, dispatch])
