@@ -7,11 +7,15 @@ import Button from '../../../components/Button/Button'
 import BIconButton from '../../../components/BIconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import BDialog from '../../../components/BDialog'
+import CreateNewUserDialog from './CreateNewUserDialog'
+import UpdateUserDialog from './UpdateUserDialog'
+
 
 const Lab6 = () => {
   const [users, setUsers] = useState([])
-  const [createUserDialogOpen, setCreateUserDialogOpen] = useSatate(false)
+  const [createUserDialogOpen, setCreateUserDialogOpen] = useState(false)
+  const [updateUserDialogOpen, setUpdateUserDialogOpen] = useState(false)
+  const [updatableUser, setUpdatableUser] = useState({})
 
   const headers = [
     { "title": "Name", "key": "name" },
@@ -20,16 +24,6 @@ const Lab6 = () => {
     { "title": "", "key": "actions" }
   ]
 
-  const onDelete = useCallback((id) => {
-    exemplar.delete(`/users/${id}`)
-      .then(() => {
-        console.log("успешно удален юзер", id)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [])
-
   useEffect(() => {
     exemplar.get("/users")
       .then((response) => {
@@ -37,65 +31,58 @@ const Lab6 = () => {
       })
   }, [])
 
-  const onCreateUser = () => {
-    setCreateUserDialogOpen(true)
-  }
+  const onDelete = useCallback((id) => {
+    exemplar.delete(`/users/${id}`)
+      .then(() => {
+        console.log("успешно удален юзер", id, users)
+        setUsers(users.filter((user) => user.id !== id))
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }, [users, setUsers])
 
-  const onCloseCreateUserDialog = () => {
+  const onCreatedSuccessfully = useCallback((id, user) => {
+    setUsers([...users, { ...user, id }])
+
     setCreateUserDialogOpen(false)
-  }
+  }, [users, setUsers])
+
+  const onUpdatedSuccessfully = useCallback((id, user) => {
+    const newUsers = [...users]
+    const existUser = newUsers.find((user) => user.id === id)
+
+    existUser.name = user.name
+    existUser.username = user.username
+    existUser.email = user.email
+
+    setUsers(newUsers)
+
+    setUpdateUserDialogOpen(false)
+  }, [users, setUsers])
 
   return (
     <div className="lab6-template">
-      <Button onClick={onCreateUser} label="Create user"></Button>
+      <Button 
+        style={{ marginBottom: "10px" }}
+        onClick={() => setCreateUserDialogOpen(true)} 
+        label="Create user"
+      ></Button>
 
-      <BDialog
-        title="Create new user"
+      <CreateNewUserDialog
         open={createUserDialogOpen}
-        handleClose={onCloseCreateUserDialog}
-      >
-        <Formik
-          initialValues={{
-            name: "",
-            username: "",
-            email: ""
-          }}
-          onSubmit={handleSubmit}
-        >
-          <Form className="lab6-user-dialog">
-            <div className="form-group">
-              <Field
-                type="text"
-                name="name"
-                className="form-control"
-                placeholder="name"
-              />
-            </div>
-            <div className="form-group">
-              <Field
-                type="text"
-                name="username"
-                className="form-control"
-                placeholder="username"
-              />
-            </div>
-            <div className="form-group">
-              <Field
-                type="text"
-                name="email"
-                className="form-control"
-                placeholder="email"
-              />
-              <label htmlFor="rememberMe2">Remember me</label>
-            </div>
-            <div className="form-group buttons">
-              <button type="button" onClick={resetForm}>Clear</button>
-              <button type="reset">Clear2</button>
-              <button type="submit">Submit</button>
-            </div>
-          </Form>
-        </Formik>
-      </BDialog>
+        onClose={() => setCreateUserDialogOpen(false)}
+        onCreatedSuccessfully={onCreatedSuccessfully}
+      ></CreateNewUserDialog>
+
+      {updateUserDialogOpen &&
+        <UpdateUserDialog
+          user={updatableUser}
+          open={updateUserDialogOpen}
+          onClose={() => setUpdateUserDialogOpen(false)}
+          onUpdatedSuccessfully={onUpdatedSuccessfully}
+        ></UpdateUserDialog>
+      }
 
       <BTable
         items={users}
@@ -118,7 +105,12 @@ const Lab6 = () => {
                     <DeleteIcon></DeleteIcon>
                   </BIconButton>
 
-                  <BIconButton color="edit" size="small" ariaLabel="delete">
+                  <BIconButton
+                    onClick={() => { setUpdatableUser(item); setUpdateUserDialogOpen(true) }}
+                    color="edit"
+                    size="small"
+                    ariaLabel="delete"
+                  >
                     <EditIcon></EditIcon>
                   </BIconButton>
                 </BTableCell>

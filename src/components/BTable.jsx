@@ -29,21 +29,3 @@ const BTable = ({ headers = [], items = [], children }) => {
 }
 
 export default BTable
-
-/* {
-  items.map((item) => {
-    return (
-      <TableRow key={item.id}>
-        {
-          headers.map((header) => {
-            return (
-              <TableCell>
-                {item[header.key]}
-              </TableCell>
-            )
-          })
-        }
-      </TableRow>
-    )
-  })
-} */

@@ -5,3 +5,8 @@ body {
 #root {
   height: 100vh;
 }
+
+form {
+  margin: 0;
+  padding: 0;
+}
