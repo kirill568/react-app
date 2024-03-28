@@ -1,8 +1,6 @@
-import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
+import PropTypes from 'prop-types'
 
 const BDialog = ({ title = "Dialog title", handleClose = () => {}, open = false, children }) => {
   return (
@@ -15,6 +13,13 @@ const BDialog = ({ title = "Dialog title", handleClose = () => {}, open = false,
       {children}
     </Dialog>
   )
+}
+
+BDialog.propTypes = {
+  title: PropTypes.string,
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  children: PropTypes.node
 }
 
 export default BDialog

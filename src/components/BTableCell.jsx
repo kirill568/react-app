@@ -1,4 +1,5 @@
-import TableCell from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell'
+import PropTypes from 'prop-types'
 
 const BTableCell = ({children}) => {
   return (
@@ -6,6 +7,10 @@ const BTableCell = ({children}) => {
       {children}
     </TableCell>
   )
+}
+
+BTableCell.propTypes = {
+  children: PropTypes.node
 }
 
 export default BTableCell
