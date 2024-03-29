@@ -9,12 +9,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CreateNewUserDialog from './CreateNewUserDialog'
 import UpdateUserDialog from './UpdateUserDialog'
+import useVisibility from './useVisibility'
 
 
 const Lab6 = () => {
   const [users, setUsers] = useState([])
-  const [createUserDialogOpen, setCreateUserDialogOpen] = useState(false)
-  const [updateUserDialogOpen, setUpdateUserDialogOpen] = useState(false)
+  const [isVisibleCreateUserDialog, {show: createUserDialogOpen, hide: createUserDialogHide}] = useVisibility()
+  const [isVisibleUpdateUserDialog,  {show: updateUserDialogOpen, hide: updateUserDialogHide}] = useVisibility()
   const [updatableUser, setUpdatableUser] = useState({})
 
   const headers = [
@@ -45,7 +46,7 @@ const Lab6 = () => {
   const onCreatedSuccessfully = useCallback((id, user) => {
     setUsers([...users, { ...user, id }])
 
-    setCreateUserDialogOpen(false)
+    createUserDialogHide()
   }, [users, setUsers])
 
   const onUpdatedSuccessfully = useCallback((id, user) => {
@@ -58,34 +59,33 @@ const Lab6 = () => {
 
     setUsers(newUsers)
 
-    setUpdateUserDialogOpen(false)
+    updateUserDialogHide()
   }, [users, setUsers])
 
   return (
     <div className="lab6-template">
       <Button 
         style={{ marginBottom: "10px" }}
-        onClick={() => setCreateUserDialogOpen(true)} 
+        onClick={() => createUserDialogOpen()} 
         label="Create user"
       ></Button>
 
       <CreateNewUserDialog
-        open={createUserDialogOpen}
-        onClose={() => setCreateUserDialogOpen(false)}
+        open={isVisibleCreateUserDialog}
+        onClose={() => createUserDialogHide()}
         onCreatedSuccessfully={onCreatedSuccessfully}
       ></CreateNewUserDialog>
 
-      {updateUserDialogOpen &&
+      {isVisibleUpdateUserDialog &&
         <UpdateUserDialog
           user={updatableUser}
-          open={updateUserDialogOpen}
-          onClose={() => setUpdateUserDialogOpen(false)}
+          open={isVisibleUpdateUserDialog}
+          onClose={() => updateUserDialogHide()}
           onUpdatedSuccessfully={onUpdatedSuccessfully}
         ></UpdateUserDialog>
       }
 
       <BTable
-        items={users}
         headers={headers}
       >
         {
@@ -106,7 +106,7 @@ const Lab6 = () => {
                   </BIconButton>
 
                   <BIconButton
-                    onClick={() => { setUpdatableUser(item); setUpdateUserDialogOpen(true) }}
+                    onClick={() => { setUpdatableUser(item); updateUserDialogOpen() }}
                     color="edit"
                     size="small"
                     ariaLabel="delete"
