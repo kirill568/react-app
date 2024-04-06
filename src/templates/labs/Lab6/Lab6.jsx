@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CreateNewUserDialog from './CreateNewUserDialog'
 import UpdateUserDialog from './UpdateUserDialog'
-import useVisibility from './useVisibility'
+import useVisibility from '../../../hooks/useVisibility'
 
 
 const Lab6 = () => {

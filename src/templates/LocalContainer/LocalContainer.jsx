@@ -4,7 +4,7 @@ import ThemeContext from '../../contexts/ThemeContext';
 import PropTypes from 'prop-types';
 
 const LocalContainer = ({children}) => {
-  const { theme} = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
 
   return (
     <Box 
@@ -14,6 +14,7 @@ const LocalContainer = ({children}) => {
     >
       <Container 
         maxWidth="lg" 
+        disableGutters
         sx={{height: "100%", display: "flex", flexDirection: "column"}}
       >
         {children}
