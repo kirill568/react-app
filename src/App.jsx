@@ -11,6 +11,7 @@ import { Box } from '@mui/material'
 import ThemeContext from './contexts/ThemeContext'
 import { THEME_LIGHT } from './contexts/ThemeContext'
 import useVisibility from './hooks/useVisibility'
+import Stack from '@mui/material/Stack'
 
 const menuItems = [
   { id: 1, text: "Lab1", path: "lab/1" },
@@ -31,16 +32,16 @@ function App() {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Menu
+        items={menuItems}
+        open={isVisibleMenu}
+        onClose={menuHide}
+      ></Menu>
+
       <LocalContainer>
         <Header pages={pages} onClickMenu={menuOpen}></Header>
 
-        <Menu
-          items={menuItems}
-          open={isVisibleMenu}
-          onClose={menuHide}
-        ></Menu>
-
-        <Box height={"100%"} sx={{ padding: 2}}>
+        <Box height={"100%"} sx={{ padding: 2, overflow: "auto" }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Content>
