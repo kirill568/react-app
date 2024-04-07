@@ -18,7 +18,8 @@ const menuItems = [
   { id: 2, text: "Lab2", path: "lab/2" },
   { id: 4, text: "Lab4", path: "lab/4" },
   { id: 5, text: "Lab5", path: "lab/5" },
-  { id: 6, text: "Lab6", path: "lab/6" }
+  { id: 6, text: "Lab6", path: "lab/6" },
+  { id: 8, text: "Lab8", path: "lab/8" }
 ]
 
 const pages = [

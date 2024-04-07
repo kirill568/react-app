@@ -5,7 +5,7 @@ import BDialogContent from '../../../../components/BDialogContent'
 import BDialogActions from '../../../../components/BDialogActions'
 import Button from '../../../../components/Button/Button'
 import { BUTTON_COLOR_GREEN, BUTTON_COLOR_GREY } from '../../../../components/Button/config'
-import exemplar from '../basic'
+import exemplar from "../../../../api/api"
 import PropTypes from 'prop-types'
 
 const CreateNewUserDialog = ({ open = false, onClose = () => {}, onCreatedSuccessfully = () => {} }) => {

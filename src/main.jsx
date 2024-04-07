@@ -11,6 +11,7 @@ import Lab2 from './templates/labs/Lab2'
 import Lab4 from './templates/labs/Lab4'
 import Lab5 from './templates/labs/Lab5'
 import Lab6 from './templates/labs/Lab6'
+import Lab8 from './templates/labs/Lab8'
 import Main from './templates/pages/MainPage.jsx'
 import AboutMe from './templates/pages/AboutMe.jsx'
 import store from './store.js'
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "lab/6",
         element: <Lab6 />,
+      },
+      {
+        path: "lab/8",
+        element: <Lab8 />,
       },
     ],
   },

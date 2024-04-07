@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import exemplar from './basic'
+import exemplar from '../../../api/api'
 import BTable from '../../../components/BTable'
 import BTableRow from '../../../components/BTableRow'
 import BTableCell from '../../../components/BTableCell'
@@ -10,7 +10,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import CreateNewUserDialog from './CreateNewUserDialog'
 import UpdateUserDialog from './UpdateUserDialog'
 import useVisibility from '../../../hooks/useVisibility'
-
 
 const Lab6 = () => {
   const [users, setUsers] = useState([])
