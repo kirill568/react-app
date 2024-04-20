@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import {
   createColumnHelper
 } from "@tanstack/react-table"
@@ -55,7 +54,7 @@ const queryFn = async (sorting, pageParam) => {
       _sort: sort ? sort.id : null,
       _order: sort ? (sort.desc ? "desc" : "asc") : null
     }
-  }) //pretend api call
+  })
   console.log(response.data)
   return response.data
 }

@@ -4,6 +4,7 @@ import {
   flexRender,
 } from '@tanstack/react-table'
 import PropTypes from 'prop-types'
+import TableCell from '@mui/material/TableCell';
 
 const CTableCell = ({ cell }) => {
   const { isDragging, setNodeRef, transform } = useSortable({
@@ -39,12 +40,13 @@ const CTableCell = ({ cell }) => {
         : undefined,
     left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
     right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
+    backgroundColor: 'white'
   }
 
   return (
-    <td style={style} ref={setNodeRef}>
+    <TableCell sx={style} ref={setNodeRef}>
       {flexRender(cell.column.columnDef.cell, cell.getContext())}
-    </td>
+    </TableCell>
   )
 }
 

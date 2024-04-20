@@ -3,6 +3,7 @@ import { CSS } from '@dnd-kit/utilities'
 import {
   flexRender,
 } from '@tanstack/react-table'
+import TableCell from '@mui/material/TableCell';
 
 const CTableHeaderCell = ({ header }) => {
   const { attributes, isDragging, listeners, setNodeRef, transform } =
@@ -40,10 +41,11 @@ const CTableHeaderCell = ({ header }) => {
         : undefined,
     left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
     right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
+    backgroundColor: 'white'
   }
 
   return (
-    <th colSpan={header.colSpan} ref={setNodeRef} style={style}>
+    <TableCell colSpan={header.colSpan} sx={style} ref={setNodeRef}>
       <div
         onClick={header.column.getToggleSortingHandler()}
       >
@@ -59,7 +61,7 @@ const CTableHeaderCell = ({ header }) => {
       <button {...attributes} {...listeners}>
         🟰
       </button>
-    </th>
+    </TableCell>
   )
 }
 

@@ -30,7 +30,15 @@ import {
 import CTableCell from './CTableCell'
 import CTableHeaderCell from './CTableHeaderCell'
 
-const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, estimateRowHeight  }) => {
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, estimateRowHeight }) => {
   const [sorting, setSorting] = useState([])
   const [columnOrder, setColumnOrder] = useState(() =>
     columns.map(c => c.id)
@@ -157,19 +165,19 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
       onDragEnd={handleDragEnd}
       sensors={sensors}
     >
-      <div
-        className="container"
+      <TableContainer
         onScroll={e => fetchMoreOnBottomReached(e.target)}
         ref={tableContainerRef}
-        style={{
+        sx={{
           overflow: 'auto', //our scrollable table container
           position: 'relative', //needed for sticky header
           height: '600px', //should be a fixed height
         }}
+        component={Paper}
       >
-        <table style={{ display: 'grid', width: table.getTotalSize() }}>
-          <thead
-            style={{
+        <Table sx={{ display: 'grid', width: table.getTotalSize() }} aria-label="simple table">
+          <TableHead
+            sx={{
               display: 'grid',
               position: 'sticky',
               top: 0,
@@ -177,7 +185,7 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
             }}
           >
             {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
+              <TableRow key={headerGroup.id}>
                 <SortableContext
                   items={columnOrder}
                   strategy={horizontalListSortingStrategy}
@@ -186,11 +194,11 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
                     <CTableHeaderCell key={header.id} header={header} />
                   ))}
                 </SortableContext>
-              </tr>
+              </TableRow>
             ))}
-          </thead>
-          <tbody
-            style={{
+          </TableHead>
+          <TableBody
+            sx={{
               display: 'grid',
               height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
               position: 'relative', //needed for absolute positioning of rows
@@ -199,11 +207,11 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
             {rowVirtualizer.getVirtualItems().map(virtualRow => {
               const row = rows[virtualRow.index]
               return (
-                <tr
+                <TableRow
                   data-index={virtualRow.index} //needed for dynamic row height measurement
                   ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
                   key={row.id}
-                  style={{
+                  sx={{
                     display: 'flex',
                     position: 'absolute',
                     transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
@@ -221,12 +229,12 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
                       </SortableContext>
                     )
                   })}
-                </tr>
+                </TableRow>
               )
             })}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </DndContext>
   )
 }
