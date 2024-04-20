@@ -42,6 +42,31 @@ import exemplar from '../../../api/api'
 
 const fetchSize = 15
 
+//These are the important styles to make sticky column pinning work!
+//Apply styles like this using your CSS strategy of choice with this kind of logic to head cells, data cells, footer cells, etc.
+//View the index.css file for more needed styles such as border-collapse: separate
+const getCommonPinningStyles = (column) => {
+  const isPinned = column.getIsPinned()
+  const isLastLeftPinnedColumn =
+    isPinned === 'left' && column.getIsLastColumn('left')
+  const isFirstRightPinnedColumn =
+    isPinned === 'right' && column.getIsFirstColumn('right')
+
+  return {
+    boxShadow: isLastLeftPinnedColumn
+      ? '-4px 0 4px -4px gray inset'
+      : isFirstRightPinnedColumn
+        ? '4px 0 4px -4px gray inset'
+        : undefined,
+    left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
+    right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
+    opacity: isPinned ? 0.95 : 1,
+    position: isPinned ? 'sticky' : 'relative',
+    width: column.getSize(),
+    zIndex: isPinned ? 1 : 0,
+  }
+}
+
 const DraggableTableHeader = ({
   header,
 }) => {
@@ -50,14 +75,36 @@ const DraggableTableHeader = ({
       id: header.column.id,
     })
 
+  const { column } = header
+
+  const isPinned = column.getIsPinned()
+  const isLastLeftPinnedColumn =
+    isPinned === 'left' && column.getIsLastColumn('left')
+  const isFirstRightPinnedColumn =
+    isPinned === 'right' && column.getIsFirstColumn('right')
+  
+  let opacity = 1
+  if (isDragging) {
+    opacity = 0.8
+  } else if (isPinned) {
+    opacity = 0.95
+  }
+
   const style = {
-    opacity: isDragging ? 0.8 : 1,
-    position: 'relative',
+    opacity,
+    position: isPinned ? 'sticky' : 'relative',
     transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
     transition: 'width transform 0.2s ease-in-out',
     whiteSpace: 'nowrap',
-    width: header.column.getSize(),
-    zIndex: isDragging ? 1 : 0,
+    width: column.getSize(),
+    zIndex: isDragging || isPinned ? 1 : 0,
+    boxShadow: isLastLeftPinnedColumn
+      ? '-4px 0 4px -4px gray inset'
+      : isFirstRightPinnedColumn
+        ? '4px 0 4px -4px gray inset'
+        : undefined,
+    left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
+    right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
   }
 
   return (
@@ -86,13 +133,35 @@ const DragAlongCell = ({ cell }) => {
     id: cell.column.id,
   })
 
+  const { column } = cell
+
+  const isPinned = column.getIsPinned()
+  const isLastLeftPinnedColumn =
+    isPinned === 'left' && column.getIsLastColumn('left')
+  const isFirstRightPinnedColumn =
+    isPinned === 'right' && column.getIsFirstColumn('right')
+  
+  let opacity = 1
+  if (isDragging) {
+    opacity = 0.8
+  } else if (isPinned) {
+    opacity = 0.95
+  }
+
   const style = {
-    opacity: isDragging ? 0.8 : 1,
-    position: 'relative',
+    opacity: opacity,
+    position: isPinned ? 'sticky' : 'relative',
     transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
     transition: 'width transform 0.2s ease-in-out',
     width: cell.column.getSize(),
-    zIndex: isDragging ? 1 : 0,
+    zIndex: isDragging || isPinned ? 1 : 0,
+    boxShadow: isLastLeftPinnedColumn
+      ? '-4px 0 4px -4px gray inset'
+      : isFirstRightPinnedColumn
+        ? '4px 0 4px -4px gray inset'
+        : undefined,
+    left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
+    right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
   }
 
   return (
@@ -110,25 +179,29 @@ const columns = [
     accessorKey: 'id',
     id: 'id',
     header: () => "Id",
-    cell: info => info.renderValue()
+    cell: info => info.renderValue(),
+    size: 250
   }),
   columnHelper.accessor("title", {
     accessorKey: 'title',
     id: 'title',
     header: () => "Title",
-    cell: info => info.renderValue()
+    cell: info => info.renderValue(),
+    size: 256
   }),
   columnHelper.accessor("body", {
     accessorKey: 'body',
     id: 'body',
     header: () => "Body",
-    cell: info => info.renderValue()
+    cell: info => info.renderValue(),
+    size: 250
   }),
   columnHelper.accessor("userId", {
     accessorKey: 'userId',
     id: 'userId',
     header: () => "UserId",
-    cell: info => info.renderValue()
+    cell: info => info.renderValue(),
+    size: 250
   })
 ]
 
@@ -160,12 +233,14 @@ const Lab8 = () => {
         const start = pageParam * fetchSize
         const sort = sorting[0]
         console.log(sort)
-        const response = await exemplar.get("/posts", { params: {
-          _start: start, 
-          _limit: fetchSize,
-          _sort: sort ? sort.id : null,
-          _order: sort ? (sort.desc ? "desc" : "asc") : null
-        } }) //pretend api call
+        const response = await exemplar.get("/posts", {
+          params: {
+            _start: start,
+            _limit: fetchSize,
+            _sort: sort ? sort.id : null,
+            _order: sort ? (sort.desc ? "desc" : "asc") : null
+          }
+        }) //pretend api call
         console.log(response.data)
         return response.data
       },
@@ -205,7 +280,7 @@ const Lab8 = () => {
   useEffect(() => {
     fetchMoreOnBottomReached(tableContainerRef.current)
   }, [fetchMoreOnBottomReached])
-  
+
   const table = useReactTable({
     data: flatData,
     columns,
@@ -216,6 +291,11 @@ const Lab8 = () => {
     onColumnOrderChange: setColumnOrder,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    initialState: {
+      columnPinning: {
+        left: ['id']
+      },
+    },
     debugTable: true,
     debugHeaders: true,
     debugColumns: true,
@@ -287,7 +367,7 @@ const Lab8 = () => {
           height: '600px', //should be a fixed height
         }}
       >
-        <table style={{ display: 'grid' }}>
+        <table style={{ display: 'grid', width: table.getTotalSize() }}>
           <thead
             style={{
               display: 'grid',
