@@ -40,7 +40,8 @@ const CTableCell = ({ cell }) => {
         : undefined,
     left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
     right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    boxSizing: 'border-box'
   }
 
   return (

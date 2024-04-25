@@ -3,7 +3,13 @@ import { CSS } from '@dnd-kit/utilities'
 import {
   flexRender,
 } from '@tanstack/react-table'
-import TableCell from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell'
+import { ArrowDownward, ArrowUpward, DragHandle } from '@mui/icons-material'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Stack from '@mui/material/Stack'
+import Box from '@mui/material/Box'
+import { boxSizing } from '@mui/system'
 
 const CTableHeaderCell = ({ header }) => {
   const { attributes, isDragging, listeners, setNodeRef, transform } =
@@ -41,27 +47,30 @@ const CTableHeaderCell = ({ header }) => {
         : undefined,
     left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
     right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    height: '62px',
+    boxSizing: 'border-box'
   }
 
   return (
     <TableCell colSpan={header.colSpan} sx={style} ref={setNodeRef}>
-      <div
-        onClick={header.column.getToggleSortingHandler()}
-      >
-        {
-          {
-            asc: ' 🔼',
-            desc: ' 🔽',
-          }[header.column.getIsSorted()] ?? null
-        }
-        {flexRender(header.column.columnDef.header, header.getContext())}
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-start">
+        <Typography onClick={header.column.getToggleSortingHandler()}>
+          {flexRender(header.column.columnDef.header, header.getContext())}
+        </Typography>
 
-      </div>
-      <button {...attributes} {...listeners}>
-        🟰
-      </button>
-    </TableCell>
+        <button {...attributes} {...listeners}><DragHandle fontSize="small"/></button>
+
+        <Box onClick={header.column.getToggleSortingHandler()}>
+          {
+            {
+              asc: <ArrowUpward fontSize="small" />,
+              desc: <ArrowDownward fontSize="small" />,
+            }[header.column.getIsSorted()] ?? null
+          }
+        </Box>
+      </Stack>
+    </TableCell >
   )
 }
 
