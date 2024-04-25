@@ -11,12 +11,13 @@ import { useContext } from 'react'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import IconButton from '@mui/material/IconButton'
+import PropTypes from 'prop-types'
 
 const Header = ({ pages, onClickMenu }) => {
   const { theme, setTheme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
-  const onThemeChange = (event) => {
+  const onThemeChange = () => {
     if (theme=== THEME_DARK) {
       setTheme(THEME_LIGHT)
     } else {
@@ -56,6 +57,11 @@ const Header = ({ pages, onClickMenu }) => {
       </Toolbar>
     </AppBar>
   )
+}
+
+Header.propTypes = {
+  pages: PropTypes.array,
+  onClickMenu: PropTypes.func
 }
 
 export default Header

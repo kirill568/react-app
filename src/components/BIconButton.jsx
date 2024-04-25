@@ -9,6 +9,7 @@ const BIconButton = ({ onClick = () => { }, size = "small", color = "primary", a
       aria-label={ariaLabel}
       onClick={onClick}
       sx={sx}
+      edge={edge}
     >
       {children}
     </IconButton>
@@ -20,7 +21,9 @@ BIconButton.propTypes = {
   color: PropTypes.string,
   onClick: PropTypes.func,
   ariaLabel: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  edge: PropTypes.string,
+  sx: PropTypes.object
 }
 
 export default BIconButton

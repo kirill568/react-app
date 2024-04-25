@@ -11,7 +11,6 @@ import { Box } from '@mui/material'
 import ThemeContext from './contexts/ThemeContext'
 import { THEME_LIGHT } from './contexts/ThemeContext'
 import useVisibility from './hooks/useVisibility'
-import Stack from '@mui/material/Stack'
 
 const menuItems = [
   { id: 1, text: "Lab1", path: "lab/1" },

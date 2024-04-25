@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import {
   getCoreRowModel,
   useReactTable,
-  createColumnHelper
 } from "@tanstack/react-table"
 import {
   keepPreviousData,
   useInfiniteQuery,
 } from '@tanstack/react-query'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import PropTypes from 'prop-types'
 
 // needed for table body level scope DnD setup
 import {
@@ -30,13 +30,12 @@ import {
 import CTableCell from './CTableCell'
 import CTableHeaderCell from './CTableHeaderCell'
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
 
 const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, estimateRowHeight }) => {
   const [sorting, setSorting] = useState([])
@@ -46,7 +45,7 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
   const tableContainerRef = useRef(null)
 
   //react-query has a useInfiniteQuery hook that is perfect for this use case
-  const { data, fetchNextPage, isFetching, isLoading } =
+  const { data, fetchNextPage, isFetching } =
     useInfiniteQuery({
       queryKey: [
         queryKey,
@@ -112,7 +111,7 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
   //scroll to top of table when sorting changes
   const handleSortingChange = updater => {
     setSorting(updater)
-    if (!!table.getRowModel().rows.length) {
+    if (table.getRowModel().rows.length) {
       rowVirtualizer.scrollToIndex?.(0)
     }
   }
@@ -140,15 +139,12 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
 
   function handleDragEnd(event) {
     const { active, over } = event
-    console.log("handleDragEnd")
     if (active && over && active.id !== over.id) {
-      console.log(JSON.stringify(columnOrder))
       setColumnOrder(columnOrder => {
         const oldIndex = columnOrder.indexOf(active.id)
         const newIndex = columnOrder.indexOf(over.id)
         return arrayMove(columnOrder, oldIndex, newIndex) //this is just a splice util
       })
-      console.log(JSON.stringify(columnOrder))
     }
   }
 
@@ -237,6 +233,15 @@ const CTable = ({ columns, columnPinning, queryFn, queryKey, totalDBRowCount, es
       </TableContainer>
     </DndContext>
   )
+}
+
+CTable.propTypes = {
+  columns: PropTypes.array,
+  columnPinning: PropTypes.object,
+  queryFn: PropTypes.func,
+  queryKey: PropTypes.string,
+  totalDBRowCount: PropTypes.number,
+  estimateRowHeight: PropTypes.number
 }
 
 export default CTable

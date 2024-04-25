@@ -55,7 +55,6 @@ const queryFn = async (sorting, pageParam) => {
       _order: sort ? (sort.desc ? "desc" : "asc") : null
     }
   })
-  console.log(response.data)
   return response.data
 }
 

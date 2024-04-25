@@ -6,10 +6,9 @@ import {
 import TableCell from '@mui/material/TableCell'
 import { ArrowDownward, ArrowUpward, DragHandle } from '@mui/icons-material'
 import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
-import { boxSizing } from '@mui/system'
+import PropTypes from 'prop-types'
 
 const CTableHeaderCell = ({ header }) => {
   const { attributes, isDragging, listeners, setNodeRef, transform } =
@@ -72,6 +71,10 @@ const CTableHeaderCell = ({ header }) => {
       </Stack>
     </TableCell >
   )
+}
+
+CTableHeaderCell.propTypes = {
+  header: PropTypes.object,
 }
 
 export default CTableHeaderCell

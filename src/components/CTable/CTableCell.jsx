@@ -3,8 +3,8 @@ import { CSS } from '@dnd-kit/utilities'
 import {
   flexRender,
 } from '@tanstack/react-table'
+import TableCell from '@mui/material/TableCell'
 import PropTypes from 'prop-types'
-import TableCell from '@mui/material/TableCell';
 
 const CTableCell = ({ cell }) => {
   const { isDragging, setNodeRef, transform } = useSortable({
@@ -51,8 +51,8 @@ const CTableCell = ({ cell }) => {
   )
 }
 
-//   CTableCell.propTypes = {
-//     cell: Object,
-//   }
+CTableCell.propTypes = {
+  cell: PropTypes.object,
+}
 
 export default CTableCell
