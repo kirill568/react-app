@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useFormik } from "formik"
 import TextField from '@mui/material/TextField';
 import BDialog from '../../../../components/BDialog'
@@ -5,10 +6,12 @@ import BDialogContent from '../../../../components/BDialogContent'
 import BDialogActions from '../../../../components/BDialogActions'
 import Button from '../../../../components/Button/Button'
 import { BUTTON_COLOR_GREEN, BUTTON_COLOR_GREY } from '../../../../components/Button/config'
-import exemplar from "../../../../api/api"
 import PropTypes from 'prop-types'
+import { useCreateUserMutation } from "../../../../api/users"
 
-const CreateNewUserDialog = ({ open = false, onClose = () => {}, onCreatedSuccessfully = () => {} }) => {
+const CreateNewUserDialog = ({ open = false, onClose = () => { }, onCreatedSuccessfully = () => { } }) => {
+  const [createUser, { isLoading, isError, error, isSuccess, data: createdUser }] = useCreateUserMutation()
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -16,20 +19,21 @@ const CreateNewUserDialog = ({ open = false, onClose = () => {}, onCreatedSucces
       email: ''
     },
     onSubmit: (user, { setSubmitting }) => {
-      console.log(JSON.stringify(user, null, 2));
-      exemplar.post(`/users`, { user })
-        .then((response) => {
-          console.log("юзер успешно создан", response)
-          onCreatedSuccessfully(response.data.id, user)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-        .finally(() => {
-          setSubmitting(false)
-        })
+      createUser(user)
+      setSubmitting(false)
     },
   })
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("юзер успешно создан", createdUser)
+      onCreatedSuccessfully(createdUser.id, createdUser)
+    }
+
+    if (isError) {
+      console.error(err)
+    }
+  }, [isLoading])
 
   return (
     <BDialog

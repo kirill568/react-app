@@ -10,11 +10,12 @@ import EditIcon from '@mui/icons-material/Edit'
 import CreateNewUserDialog from './CreateNewUserDialog'
 import UpdateUserDialog from './UpdateUserDialog'
 import useVisibility from '../../../hooks/useVisibility'
+import { useGetUsersQuery, useDeleteUserMutation } from '../../../api/users'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const Lab6 = () => {
-  const [users, setUsers] = useState([])
-  const [isVisibleCreateUserDialog, {show: createUserDialogOpen, hide: createUserDialogHide}] = useVisibility()
-  const [isVisibleUpdateUserDialog,  {show: updateUserDialogOpen, hide: updateUserDialogHide}] = useVisibility()
+  const [isVisibleCreateUserDialog, { show: createUserDialogOpen, hide: createUserDialogHide }] = useVisibility()
+  const [isVisibleUpdateUserDialog, { show: updateUserDialogOpen, hide: updateUserDialogHide }] = useVisibility()
   const [updatableUser, setUpdatableUser] = useState({})
 
   const headers = [
@@ -24,48 +25,44 @@ const Lab6 = () => {
     { "title": "", "key": "actions" }
   ]
 
-  useEffect(() => {
-    exemplar.get("/users")
-      .then((response) => {
-        setUsers(response.data)
-      })
-  }, [])
+  const {
+    isLoadingGetting,
+    isFetching,
+    isErrorGetting,
+    isSuccessGetting,
+    data: users,
+  } = useGetUsersQuery(
+    { refetchOnFocus: true, refetchOnReconnect: true }
+  )
 
-  const onDelete = useCallback((id) => {
-    exemplar.delete(`/users/${id}`)
-      .then(() => {
-        console.log("успешно удален юзер", id, users)
-        setUsers(users.filter((user) => user.id !== id))
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [users, setUsers])
+  const [deleteUser, { isLoadingDeleting, isErrorDeleting, isSuccessDeleting }] = useDeleteUserMutation();
+
+  const loading = isLoadingGetting || isFetching
+
+  useEffect(() => {
+    if (isSuccessDeleting) {
+      console.log("успешно удален юзер")
+    }
+
+    if (isErrorDeleting) {
+      console.error(err)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoadingDeleting])
 
   const onCreatedSuccessfully = useCallback((id, user) => {
-    setUsers([...users, { ...user, id }])
-
     createUserDialogHide()
-  }, [users, setUsers])
+  })
 
   const onUpdatedSuccessfully = useCallback((id, user) => {
-    const newUsers = [...users]
-    const existUser = newUsers.find((user) => user.id === id)
-
-    existUser.name = user.name
-    existUser.username = user.username
-    existUser.email = user.email
-
-    setUsers(newUsers)
-
     updateUserDialogHide()
-  }, [users, setUsers])
+  })
 
   return (
     <div className="lab6-template">
-      <Button 
+      <Button
         style={{ marginBottom: "10px" }}
-        onClick={() => createUserDialogOpen()} 
+        onClick={() => createUserDialogOpen()}
         label="Create user"
       ></Button>
 
@@ -84,7 +81,10 @@ const Lab6 = () => {
         ></UpdateUserDialog>
       }
 
-      <BTable
+      {loading ? (
+        <CircularProgress style={{ position: "absolute", top: "50%", left: "50%", transform: "translateX(-50%, -50%)"}} />
+      ) : users ? (
+        <BTable
         headers={headers}
       >
         {
@@ -96,7 +96,7 @@ const Lab6 = () => {
                 <BTableCell>{item.email}</BTableCell>
                 <BTableCell>
                   <BIconButton
-                    onClick={() => onDelete(item.id)}
+                    onClick={() => deleteUser(item.id)}
                     color="primary"
                     size="small"
                     ariaLabel="delete"
@@ -118,7 +118,7 @@ const Lab6 = () => {
           })
         }
       </BTable>
-
+      ) : null}
 
     </div>
   )

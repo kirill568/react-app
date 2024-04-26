@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useFormik } from "formik"
 import TextField from '@mui/material/TextField';
 import BDialog from '../../../../components/BDialog'
@@ -5,10 +6,12 @@ import BDialogContent from '../../../../components/BDialogContent'
 import BDialogActions from '../../../../components/BDialogActions'
 import Button from '../../../../components/Button/Button'
 import { BUTTON_COLOR_GREEN, BUTTON_COLOR_GREY } from '../../../../components/Button/config'
-import exemplar from "../../../../api/api"
 import PropTypes from 'prop-types'
+import { useUpdateUserMutation } from "../../../../api/users"
 
 const UpdateUserDialog = ({ user, open = false, onClose = () => { }, onUpdatedSuccessfully = () => { } }) => {
+  const [updateUser, { isLoading, isError, error, isSuccess, data: updatedUser }] = useUpdateUserMutation()
+
   const formik = useFormik({
     initialValues: {
       name: user.name,
@@ -16,21 +19,23 @@ const UpdateUserDialog = ({ user, open = false, onClose = () => { }, onUpdatedSu
       email: user.email
     },
     onSubmit: (updatedUser, { setSubmitting }) => {
-      console.log(JSON.stringify(updatedUser, null, 2));
-      exemplar.put(`/users/${user.id}`, { updatedUser })
-        .then((response) => {
-          console.log("юзер успешно обновлен", response)
-          onUpdatedSuccessfully(user.id, updatedUser)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-        .finally(() => {
-          setSubmitting(false)
-        })
+      console.log(JSON.stringify(updatedUser, null, 2))
+      updateUser({id: user.id, user: updatedUser})
+      setSubmitting(false)
     },
     enableReinitialze: true
   }, [user])
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("юзер успешно обновлен")
+      onUpdatedSuccessfully(updatedUser.id, updatedUser)
+    }
+
+    if (isError) {
+      console.error(err)
+    }
+  }, [isLoading])
 
   return (
     <BDialog

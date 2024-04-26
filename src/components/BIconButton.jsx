@@ -9,7 +9,6 @@ const BIconButton = ({ onClick = () => { }, size = "small", color = "primary", a
       aria-label={ariaLabel}
       onClick={onClick}
       sx={sx}
-      edge={edge}
     >
       {children}
     </IconButton>
